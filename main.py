@@ -1,23 +1,20 @@
 import asyncio
-import os
 
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message
-from dotenv import load_dotenv
 from groq import AsyncGroq
 
+from config import get_groq_api_key, get_telegram_bot_token
 from proxy_config import setup_proxy
 
 setup_proxy()  # Установка прокси
 
-load_dotenv()  # Загружаем переменные окружения из файла .env
-
 # Инициализация Groq клиента
-client = AsyncGroq(api_key=os.getenv("GROQ_API_KEY"))
+client = AsyncGroq(api_key=get_groq_api_key())
 
 # Установите токен вашего Telegram бота
-API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+API_TOKEN = get_telegram_bot_token()
 
 # Инициализация бота и диспетчера
 bot = Bot(token=API_TOKEN)
