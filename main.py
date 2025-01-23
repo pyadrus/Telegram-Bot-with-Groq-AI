@@ -7,9 +7,10 @@ from aiogram.types import Message
 from dotenv import load_dotenv
 from groq import AsyncGroq
 
-# Указываем прокси для HTTP и HTTPS
-os.environ['http_proxy'] = 'http://user214656:gt89vf@185.218.1.125:3169'
-os.environ['https_proxy'] = 'http://user214656:gt89vf@185.218.1.125:3169'
+from proxy_config import setup_proxy
+
+setup_proxy()
+
 # Загружаем переменные окружения из файла .env
 load_dotenv()
 
