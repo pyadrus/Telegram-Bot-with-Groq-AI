@@ -9,10 +9,9 @@ from groq import AsyncGroq
 
 from proxy_config import setup_proxy
 
-setup_proxy()
+setup_proxy()  # Установка прокси
 
-# Загружаем переменные окружения из файла .env
-load_dotenv()
+load_dotenv()  # Загружаем переменные окружения из файла .env
 
 # Инициализация Groq клиента
 client = AsyncGroq(api_key=os.getenv("GROQ_API_KEY"))
@@ -24,19 +23,20 @@ API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
-# Словарь для хранения истории диалогов
-user_dialogs = {}
+user_dialogs = {}  # Словарь для хранения истории диалогов
 
-# Обработчик команды /start
+
 @dp.message(Command("start"))
 async def cmd_start(message: Message):
+    """Обработчик команды /start"""
     user_id = message.from_user.id
     user_dialogs[user_id] = []  # Очищаем историю диалога
     await message.answer("Диалог перезапущен. Задайте ваш вопрос.")
 
-# Обработчик текстовых сообщений
+
 @dp.message()
 async def handle_message(message: Message):
+    """Обработчик текстовых сообщений"""
     user_id = message.from_user.id
     user_message = message.text
 
@@ -59,6 +59,7 @@ async def handle_message(message: Message):
 
     # Отправляем ответ пользователю
     await message.answer(ai_response)
+
 
 # Запуск бота
 if __name__ == "__main__":
