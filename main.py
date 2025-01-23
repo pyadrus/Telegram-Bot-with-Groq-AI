@@ -1,10 +1,9 @@
 import asyncio
-
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message
+from aiogram.enums import ChatAction
 from groq import AsyncGroq
-
 from config import get_groq_api_key, get_telegram_bot_token
 from proxy_config import setup_proxy
 
@@ -23,12 +22,17 @@ dp = Dispatcher()
 user_dialogs = {}  # Словарь для хранения истории диалогов
 
 
+def remove_markdown_symbols(text: str) -> str:
+    """Удаляет символы Markdown (* и **) из текста."""
+    return text.replace("*", "")
+
+
 @dp.message(Command("start"))
 async def cmd_start(message: Message):
     """Обработчик команды /start"""
     user_id = message.from_user.id
     user_dialogs[user_id] = []  # Очищаем историю диалога
-    await message.answer("Диалог перезапущен. Задайте ваш вопрос.")
+    await message.answer("Диалог перезапущен. Задайте ваш вопрос.")  # Без parse_mode
 
 
 @dp.message()
@@ -42,6 +46,9 @@ async def handle_message(message: Message):
         user_dialogs[user_id] = []
     user_dialogs[user_id].append({"role": "user", "content": user_message})
 
+    # Показываем, что бот "печатает"
+    await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
+
     # Формируем запрос к Groq API
     chat_completion = await client.chat.completions.create(
         messages=user_dialogs[user_id],
@@ -54,8 +61,11 @@ async def handle_message(message: Message):
     # Добавляем ответ ИИ в историю диалога
     user_dialogs[user_id].append({"role": "assistant", "content": ai_response})
 
-    # Отправляем ответ пользователю
-    await message.answer(ai_response)
+    # Удаляем символы Markdown (* и **)
+    clean_response = remove_markdown_symbols(ai_response)
+
+    # Отправляем ответ пользователю без parse_mode
+    await message.answer(clean_response)  # Без parse_mode
 
 
 # Запуск бота
