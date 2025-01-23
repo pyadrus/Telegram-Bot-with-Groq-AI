@@ -13,7 +13,7 @@
 
 1. **Клонируйте репозиторий**:
    ```bash
-   git clone https://github.com/ваш-username/ваш-репозиторий.git
+   git clone https://github.com/pyadrus/Telegram-Bot-with-Groq-AI.git
    cd ваш-репозиторий
     ```
 2. **Установите зависимости**:  
@@ -62,8 +62,8 @@ python main.py
 
 ## Лицензия
 
-Этот проект распространяется под лицензией MIT. Подробнее см. в
-файле [LICENSE](https://chat.deepseek.com/a/chat/s/LICENSE).
+Этот проект распространяется под лицензией GPL-3.0 license. Подробнее см. в
+файле [LICENSE](https://github.com/pyadrus/Telegram-Bot-with-Groq-AI/blob/master/LICENSE).
 
 ---
 
