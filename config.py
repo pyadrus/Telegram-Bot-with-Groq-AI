@@ -1,8 +1,10 @@
 import os
+
 from dotenv import load_dotenv
 
 # Загружаем переменные окружения из файла .env
 load_dotenv()
+
 
 # Функции для получения переменных окружения
 def get_groq_api_key() -> str:
@@ -12,12 +14,14 @@ def get_groq_api_key() -> str:
         raise ValueError("GROQ_API_KEY не найден в переменных окружения.")
     return api_key
 
+
 def get_telegram_bot_token() -> str:
     """Возвращает токен Telegram бота."""
     token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not token:
         raise ValueError("TELEGRAM_BOT_TOKEN не найден в переменных окружения.")
     return token
+
 
 # Настройки прокси
 def get_proxy_user() -> str:
@@ -27,6 +31,7 @@ def get_proxy_user() -> str:
         raise ValueError("USER (логин прокси) не найден в переменных окружения.")
     return user
 
+
 def get_proxy_password() -> str:
     """Возвращает пароль для прокси."""
     password = os.getenv("PASSWORD")
@@ -34,12 +39,14 @@ def get_proxy_password() -> str:
         raise ValueError("PASSWORD (пароль прокси) не найден в переменных окружения.")
     return password
 
+
 def get_proxy_port() -> str:
     """Возвращает порт для прокси."""
     port = os.getenv("PORT")
     if not port:
         raise ValueError("PORT (порт прокси) не найден в переменных окружения.")
     return port
+
 
 def get_proxy_ip() -> str:
     """Возвращает IP для прокси."""

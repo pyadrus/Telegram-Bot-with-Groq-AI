@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 from config import get_proxy_user, get_proxy_password, get_proxy_port, get_proxy_ip
@@ -10,6 +11,7 @@ proxy_user = get_proxy_user()
 proxy_password = get_proxy_password()
 proxy_port = get_proxy_port()
 proxy_ip = get_proxy_ip()
+
 
 def setup_proxy():
     # Указываем прокси для HTTP и HTTPS
