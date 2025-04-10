@@ -7,9 +7,12 @@ from aiogram.enums import ChatAction
 from aiogram.filters import Command
 from aiogram.types import Message
 from groq import AsyncGroq
+from loguru import logger
 
 from config import get_groq_api_key, get_telegram_bot_token
 from proxy_config import setup_proxy
+
+logger.add("debug.log", format="{time} {level} {message}", level="DEBUG")  # Настройка логирования
 
 setup_proxy()  # Установка прокси
 
@@ -75,24 +78,27 @@ async def handle_message(message: Message):
 
     # Показываем, что бот "печатает"
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
+    try:
+        # Формируем запрос к Groq API
+        chat_completion = await client.chat.completions.create(
+            messages=user_dialogs[user_id],
+            model="gemma2-9b-it",
+        )
 
-    # Формируем запрос к Groq API
-    chat_completion = await client.chat.completions.create(
-        messages=user_dialogs[user_id],
-        model="llama3-8b-8192",
-    )
+        # Получаем ответ от ИИ
+        ai_response = chat_completion.choices[0].message.content
 
-    # Получаем ответ от ИИ
-    ai_response = chat_completion.choices[0].message.content
+        # Добавляем ответ ИИ в историю диалога
+        user_dialogs[user_id].append({"role": "assistant", "content": ai_response})
 
-    # Добавляем ответ ИИ в историю диалога
-    user_dialogs[user_id].append({"role": "assistant", "content": ai_response})
+        # Удаляем символы Markdown (* и **)
+        clean_response = remove_markdown_symbols(ai_response)
 
-    # Удаляем символы Markdown (* и **)
-    clean_response = remove_markdown_symbols(ai_response)
+        # Отправляем ответ пользователю
+        await message.answer(clean_response)
 
-    # Отправляем ответ пользователю
-    await message.answer(clean_response)
+    except Exception as e:
+        logger.exception(f"Ошибка при обработке сообщения: {str(e)}")
 
 
 # Ограничение длины истории диалога (опционально)
