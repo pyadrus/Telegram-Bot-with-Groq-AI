@@ -3,7 +3,6 @@ import os
 
 os.system("""pip install -r requirements.txt""")
 
-# Создание файла .env
-# os.chdir(".env")
-
 file = open(".env", "w")
+file.write('GROQ_API_KEY=\n'
+           'TELEGRAM_BOT_TOKEN=\n')

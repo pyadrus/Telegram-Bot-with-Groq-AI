@@ -7,28 +7,8 @@ from loguru import logger
 # Загружаем переменные окружения из файла .env
 load_dotenv()
 
-
-# Функции для получения переменных окружения
-def get_groq_api_key():
-    """Возвращает API-ключ для Groq."""
-    try:
-        api_key = os.getenv("GROQ_API_KEY")
-        if not api_key:
-            raise ValueError("GROQ_API_KEY не найден в переменных окружения.")
-        return api_key
-    except Exception as e:
-        logger.exception(e)
-
-
-def get_telegram_bot_token():
-    """Возвращает токен Telegram бота."""
-    try:
-        token = os.getenv("TELEGRAM_BOT_TOKEN")
-        if not token:
-            raise ValueError("TELEGRAM_BOT_TOKEN не найден в переменных окружения.")
-        return token
-    except Exception as e:
-        logger.exception(e)
+api_key = os.getenv("GROQ_API_KEY")
+token = os.getenv("TELEGRAM_BOT_TOKEN")
 
 
 # Настройки прокси

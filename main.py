@@ -9,7 +9,7 @@ from aiogram.types import Message
 from groq import AsyncGroq
 from loguru import logger
 
-from config import get_groq_api_key, get_telegram_bot_token
+from config import api_key, token
 from proxy_config import setup_proxy
 
 logger.add("debug.log", format="{time} {level} {message}", level="DEBUG")  # Настройка логирования
@@ -17,13 +17,10 @@ logger.add("debug.log", format="{time} {level} {message}", level="DEBUG")  # Н�
 setup_proxy()  # Установка прокси
 
 # Инициализация Groq клиента
-client = AsyncGroq(api_key=get_groq_api_key())
-
-# Установите токен вашего Telegram бота
-API_TOKEN = get_telegram_bot_token()
+client = AsyncGroq(api_key=api_key)
 
 # Инициализация бота и диспетчера
-bot = Bot(token=API_TOKEN)
+bot = Bot(token=token)
 dp = Dispatcher()
 
 user_dialogs = {}  # Словарь для хранения истории диалогов
