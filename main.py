@@ -2,14 +2,14 @@
 import asyncio
 import os
 
-from aiogram import Bot, Dispatcher
 from aiogram.enums import ChatAction
 from aiogram.filters import Command
 from aiogram.types import Message
 from groq import AsyncGroq
 from loguru import logger
 
-from config import api_key, token, KNOWLEDGE_BASE_PATH
+from config import api_key, KNOWLEDGE_BASE_PATH
+from dispatcher import dp, bot
 from proxy import setup_proxy
 
 logger.add("debug.log", format="{time} {level} {message}", level="DEBUG")  # Настройка логирования
@@ -18,10 +18,6 @@ setup_proxy()  # Установка прокси
 
 # Инициализация Groq клиента
 client = AsyncGroq(api_key=api_key)
-
-# Инициализация бота и диспетчера
-bot = Bot(token=token)
-dp = Dispatcher()
 
 user_dialogs = {}  # Словарь для хранения истории диалогов
 
@@ -61,7 +57,6 @@ async def handle_message(message: Message):
     """Обработчик текстовых сообщений"""
     user_id = message.from_user.id
     user_message = message.text
-
     # Добавляем сообщение пользователя в историю диалога
     if user_id not in user_dialogs:
         user_dialogs[user_id] = [
@@ -69,7 +64,6 @@ async def handle_message(message: Message):
              "content": f"Ты бот-помощник. Используй эту базу знаний для ответов: {knowledge_base_content}"}
         ]
     user_dialogs[user_id].append({"role": "user", "content": user_message})
-
     # Показываем, что бот "печатает"
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     try:
@@ -78,19 +72,14 @@ async def handle_message(message: Message):
             messages=user_dialogs[user_id],
             model="gemma2-9b-it",
         )
-
         # Получаем ответ от ИИ
         ai_response = chat_completion.choices[0].message.content
-
         # Добавляем ответ ИИ в историю диалога
         user_dialogs[user_id].append({"role": "assistant", "content": ai_response})
-
         # Удаляем символы Markdown (* и **)
         clean_response = remove_markdown_symbols(ai_response)
-
         # Отправляем ответ пользователю
         await message.answer(clean_response)
-
     except Exception as e:
         logger.exception(f"Ошибка при обработке сообщения: {str(e)}")
 
@@ -109,27 +98,21 @@ async def handle_message(message: Message):
     """Обработчик текстовых сообщений с ограничением истории"""
     user_id = message.from_user.id
     user_message = message.text
-
     if user_id not in user_dialogs:
         user_dialogs[user_id] = [
             {"role": "system",
              "content": f"Ты бот-помощник. Используй эту базу знаний для ответов: {knowledge_base_content}"}
         ]
     user_dialogs[user_id].append({"role": "user", "content": user_message})
-
     # Ограничиваем историю диалога
     user_dialogs[user_id] = limit_dialog_history(user_dialogs[user_id])
-
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
-
     chat_completion = await client.chat.completions.create(
         messages=user_dialogs[user_id],
         model="llama3-8b-8192",
     )
-
     ai_response = chat_completion.choices[0].message.content
     user_dialogs[user_id].append({"role": "assistant", "content": ai_response})
-
     clean_response = remove_markdown_symbols(ai_response)
     await message.answer(clean_response)
 
