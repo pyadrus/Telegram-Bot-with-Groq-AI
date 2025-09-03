@@ -10,17 +10,7 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")  # Ключ API для Groq
 token = os.getenv("TELEGRAM_BOT_TOKEN")  # Токен для Telegram-бота
 user = os.getenv("USER")  # Пользователь для прокси
-
-
-def get_proxy_password():
-    """Возвращает пароль для прокси."""
-    try:
-        password = os.getenv("PASSWORD")
-        if not password:
-            raise ValueError("PASSWORD (пароль прокси) не найден в переменных окружения.")
-        return password
-    except Exception as e:
-        logger.exception(e)
+password = os.getenv("PASSWORD")  # Пароль для прокси
 
 
 def get_proxy_port():
