@@ -7,20 +7,9 @@ from loguru import logger
 # Загружаем переменные окружения из файла .env
 load_dotenv()
 
-api_key = os.getenv("GROQ_API_KEY")
-token = os.getenv("TELEGRAM_BOT_TOKEN")
-
-
-# Настройки прокси
-def get_proxy_user():
-    """Возвращает логин для прокси."""
-    try:
-        user = os.getenv("USER")
-        if not user:
-            raise ValueError("USER (логин прокси) не найден в переменных окружения.")
-        return user
-    except Exception as e:
-        logger.exception(e)
+api_key = os.getenv("GROQ_API_KEY")  # Ключ API для Groq
+token = os.getenv("TELEGRAM_BOT_TOKEN")  # Токен для Telegram-бота
+user = os.getenv("USER")  # Пользователь для прокси
 
 
 def get_proxy_password():
