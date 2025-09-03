@@ -25,13 +25,7 @@ dp = Dispatcher()
 
 user_dialogs = {}  # Словарь для хранения истории диалогов
 
-# Путь к файлу базы знаний
-KNOWLEDGE_BASE_PATH = "knowledge_base/data.txt"
 
-# Создание папки для базы знаний
-os.mkdir("knowledge_base")
-# Создание файла базы знаний
-os.mknod("knowledge_base/data.txt")
 
 
 # Чтение базы знаний

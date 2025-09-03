@@ -12,3 +12,8 @@ file.write(
     'PORT=\n'
     'IP=\n'
 )
+
+# Создание папки для базы знаний
+os.mkdir("knowledge_base")
+
+files = open('knowledge_base/data.txt', 'w')

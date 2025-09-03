@@ -13,3 +13,6 @@ user = os.getenv("USER")  # Пользователь для прокси
 password = os.getenv("PASSWORD")  # Пароль для прокси
 port = os.getenv("PORT")
 ip = os.getenv("IP")
+
+# Путь к файлу базы знаний
+KNOWLEDGE_BASE_PATH = "knowledge_base/data.txt"
