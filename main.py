@@ -109,7 +109,7 @@ async def handle_message(message: Message):
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     chat_completion = await client.chat.completions.create(
         messages=user_dialogs[user_id],
-        model="llama3-8b-8192",
+        model="gemma2-9b-it",
     )
     ai_response = chat_completion.choices[0].message.content
     user_dialogs[user_id].append({"role": "assistant", "content": ai_response})
