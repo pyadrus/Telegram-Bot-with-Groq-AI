@@ -1,3 +1,4 @@
+gradio
 aiogram
 python-dotenv
 groq

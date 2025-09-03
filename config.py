@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
-from venv import logger
 
 from dotenv import load_dotenv
+from loguru import logger
 
 # Загружаем переменные окружения из файла .env
 load_dotenv()
 
 
 # Функции для получения переменных окружения
-def get_groq_api_key() -> str:
+def get_groq_api_key():
     """Возвращает API-ключ для Groq."""
     try:
         api_key = os.getenv("GROQ_API_KEY")
@@ -19,7 +19,8 @@ def get_groq_api_key() -> str:
     except Exception as e:
         logger.exception(e)
 
-def get_telegram_bot_token() -> str:
+
+def get_telegram_bot_token():
     """Возвращает токен Telegram бота."""
     try:
         token = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -28,6 +29,7 @@ def get_telegram_bot_token() -> str:
         return token
     except Exception as e:
         logger.exception(e)
+
 
 # Настройки прокси
 def get_proxy_user():
@@ -51,6 +53,7 @@ def get_proxy_password():
     except Exception as e:
         logger.exception(e)
 
+
 def get_proxy_port():
     """Возвращает порт для прокси."""
     try:
@@ -62,7 +65,7 @@ def get_proxy_port():
         logger.exception(e)
 
 
-def get_proxy_ip() -> str:
+def get_proxy_ip():
     """Возвращает IP для прокси."""
     try:
         ip = os.getenv("IP")
