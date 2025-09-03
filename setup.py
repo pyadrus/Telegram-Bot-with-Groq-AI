@@ -10,4 +10,5 @@ file.write(
     'USER=\n'
     'PASSWORD=\n'
     'PORT=\n'
+    'IP=\n'
 )

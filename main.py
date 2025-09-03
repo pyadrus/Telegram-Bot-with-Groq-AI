@@ -10,7 +10,7 @@ from groq import AsyncGroq
 from loguru import logger
 
 from config import api_key, token
-from proxy_config import setup_proxy
+from proxy import setup_proxy
 
 logger.add("debug.log", format="{time} {level} {message}", level="DEBUG")  # Настройка логирования
 
