@@ -9,7 +9,7 @@ from aiogram.types import Message
 from groq import AsyncGroq
 from loguru import logger
 
-from config import api_key, token
+from config import api_key, token, KNOWLEDGE_BASE_PATH
 from proxy import setup_proxy
 
 logger.add("debug.log", format="{time} {level} {message}", level="DEBUG")  # Настройка логирования
@@ -24,8 +24,6 @@ bot = Bot(token=token)
 dp = Dispatcher()
 
 user_dialogs = {}  # Словарь для хранения истории диалогов
-
-
 
 
 # Чтение базы знаний
